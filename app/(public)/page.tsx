@@ -31,10 +31,10 @@ export default function LandingPage() {
           </p>
           <div className="flex gap-4 justify-center">
             <Link href="/signup/candidate" className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700">
-              I'm a Candidate
+              I&apos;m a Candidate
             </Link>
             <Link href="/signup/company" className="px-6 py-3 bg-gray-100 text-gray-900 rounded-md font-medium hover:bg-gray-200">
-              I'm Hiring
+              I&apos;m Hiring
             </Link>
           </div>
         </section>

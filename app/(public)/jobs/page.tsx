@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function JobsPage() {
   return (
     <div className="min-h-screen">
@@ -6,15 +8,15 @@ export default function JobsPage() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">TechFill</h1>
           <nav className="flex gap-4">
-            <a href="/" className="px-4 py-2 text-sm font-medium hover:underline">
+            <Link href="/" className="px-4 py-2 text-sm font-medium hover:underline">
               Home
-            </a>
-            <a href="/login" className="px-4 py-2 text-sm font-medium hover:underline">
+            </Link>
+            <Link href="/login" className="px-4 py-2 text-sm font-medium hover:underline">
               Log in
-            </a>
-            <a href="/signup/candidate" className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            </Link>
+            <Link href="/signup/candidate" className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700">
               Sign up
-            </a>
+            </Link>
           </nav>
         </div>
       </header>
@@ -88,8 +90,8 @@ export default function JobsPage() {
                 </span>
               </div>
               <p className="text-gray-700 mb-4">
-                We're looking for a senior engineer to help build our next-generation
-                fintech platform. You'll work with React, Node.js, and TypeScript.
+                We&apos;re looking for a senior engineer to help build our next-generation
+                fintech platform. You&apos;ll work with React, Node.js, and TypeScript.
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm">

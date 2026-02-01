@@ -7,7 +7,7 @@ export default function LoginPage() {
         <div>
           <h2 className="text-center text-3xl font-bold">Log in to TechFill</h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/signup/candidate" className="font-medium text-blue-600 hover:text-blue-500">
               Sign up as a candidate
             </Link>
