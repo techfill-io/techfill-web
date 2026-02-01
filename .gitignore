@@ -29,9 +29,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# env files
+# env files (CRITICAL - never commit!)
 .env*.local
 .env
+.env.production
+.env.development
 
 # vercel
 .vercel
@@ -46,3 +48,24 @@ next-env.d.ts
 *.swp
 *.swo
 *~
+
+# Supabase
+.supabase/
+supabase/.branches
+supabase/.temp
+supabase/config.toml
+supabase/seed.sql
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*

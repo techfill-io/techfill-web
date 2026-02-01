@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
 
 export default function CompanySignupPage() {
   return (
@@ -19,6 +22,22 @@ export default function CompanySignupPage() {
             </Link>
           </p>
         </div>
+
+        {/* Google Sign Up */}
+        <div className="mt-6">
+          <GoogleSignInButton mode="signup" />
+        </div>
+
+        {/* Divider */}
+        <div className="relative mt-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">Or sign up with email</span>
+          </div>
+        </div>
+
         <form className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
