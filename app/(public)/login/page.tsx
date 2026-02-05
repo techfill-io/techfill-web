@@ -1,9 +1,100 @@
 'use client';
 
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase/client';
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
+import { loginSchema, type LoginFormData } from '@/lib/validations/auth';
+import { ZodError } from 'zod';
 
-export default function LoginPage() {
+function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: '',
+    password: '',
+    rememberMe: false,
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const reset = searchParams.get('reset');
+    const verified = searchParams.get('verified');
+    const error = searchParams.get('error');
+
+    if (reset === 'success') {
+      setSuccessMessage('Your password has been reset successfully. Please log in with your new password.');
+    } else if (verified === 'true') {
+      setSuccessMessage('Your email has been verified. You can now log in.');
+    }
+
+    if (error === 'auth_failed') {
+      setGeneralError('Authentication failed. Please try again.');
+    } else if (error === 'verification_failed') {
+      setGeneralError('Email verification failed. The link may have expired.');
+    }
+  }, [searchParams]);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setErrors({});
+    setGeneralError(null);
+    setIsLoading(true);
+
+    try {
+      const validated = loginSchema.parse(formData);
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email: validated.email,
+        password: validated.password,
+      });
+
+      if (error) {
+        if (error.message?.includes('Email not confirmed')) {
+          setGeneralError('Please verify your email address before logging in.');
+        } else {
+          setGeneralError('Invalid email or password.');
+        }
+        setIsLoading(false);
+        return;
+      }
+
+      router.push('/dashboard');
+      router.refresh();
+    } catch (err) {
+      if (err instanceof ZodError) {
+        const fieldErrors: Record<string, string> = {};
+        err.errors.forEach((e) => {
+          const field = e.path[0]?.toString();
+          if (field) {
+            fieldErrors[field] = e.message;
+          }
+        });
+        setErrors(fieldErrors);
+      } else {
+        setGeneralError('An unexpected error occurred. Please try again.');
+      }
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
@@ -21,12 +112,10 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Google Sign In */}
         <div className="mt-6">
           <GoogleSignInButton mode="signin" />
         </div>
 
-        {/* Divider */}
         <div className="relative mt-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
@@ -36,7 +125,19 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <form className="mt-8 space-y-6">
+        {successMessage && (
+          <div className="rounded-md bg-green-50 p-4">
+            <p className="text-sm text-green-800">{successMessage}</p>
+          </div>
+        )}
+
+        {generalError && (
+          <div className="rounded-md bg-red-50 p-4">
+            <p className="text-sm text-red-800">{generalError}</p>
+          </div>
+        )}
+
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -48,8 +149,15 @@ export default function LoginPage() {
                 type="email"
                 autoComplete="email"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                value={formData.email}
+                onChange={handleChange}
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
+                  errors.email ? 'border-red-300' : 'border-gray-300'
+                }`}
               />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              )}
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -61,47 +169,69 @@ export default function LoginPage() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                value={formData.password}
+                onChange={handleChange}
+                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
+                  errors.password ? 'border-red-300' : 'border-gray-300'
+                }`}
               />
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+              )}
             </div>
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
-                id="remember-me"
-                name="remember-me"
+                id="rememberMe"
+                name="rememberMe"
                 type="checkbox"
+                checked={formData.rememberMe}
+                onChange={handleChange}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+              <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
                 Remember me
               </label>
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+              <Link href="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
                 Forgot password?
-              </a>
+              </Link>
             </div>
           </div>
 
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={isLoading}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Log in
+              {isLoading ? 'Logging in...' : 'Log in'}
             </button>
           </div>
         </form>
 
         <div className="text-center">
           <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
-            ← Back to home
+            &larr; Back to home
           </Link>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 }

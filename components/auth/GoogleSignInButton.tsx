@@ -5,10 +5,11 @@ import { supabase } from '@/lib/supabase/client';
 
 interface GoogleSignInButtonProps {
   mode?: 'signin' | 'signup';
+  role?: 'candidate' | 'company';
   className?: string;
 }
 
-export function GoogleSignInButton({ mode = 'signin', className = '' }: GoogleSignInButtonProps) {
+export function GoogleSignInButton({ mode = 'signin', role, className = '' }: GoogleSignInButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,10 +18,15 @@ export function GoogleSignInButton({ mode = 'signin', className = '' }: GoogleSi
       setIsLoading(true);
       setError(null);
 
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const redirectUrl = new URL('/auth/callback', window.location.origin);
+      if (role) {
+        redirectUrl.searchParams.set('role', role);
+      }
+
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl.toString(),
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -29,12 +35,10 @@ export function GoogleSignInButton({ mode = 'signin', className = '' }: GoogleSi
       });
 
       if (error) {
-        console.error('Google sign-in error:', error);
         setError(error.message);
         setIsLoading(false);
       }
-    } catch (err) {
-      console.error('Unexpected error:', err);
+    } catch {
       setError('An unexpected error occurred. Please try again.');
       setIsLoading(false);
     }
