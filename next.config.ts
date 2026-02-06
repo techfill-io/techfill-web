@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Temporarily disable strict mode to debug AbortError
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {

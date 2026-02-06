@@ -1,379 +1,378 @@
 import Link from 'next/link';
-import { ArrowRight, Users, Zap, Target, MapPin, Clock, DollarSign } from 'lucide-react';
+import { Search, MapPin, Building2, Users, ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import Particles from '@/components/ui/Particles';
 
-// Mock job data for the jobs section
-const featuredJobs = [
+// Mock startup data
+const featuredStartups = [
   {
     id: 1,
-    title: 'Senior Full-Stack Developer',
-    company: 'TechFlow',
-    location: 'Remote',
-    salary: '$120k - $150k',
-    type: 'Full-time',
-    tech: ['React', 'Node.js', 'TypeScript']
+    name: 'TechFlow',
+    description: 'AI-powered workflow automation for modern teams',
+    logo: 'TF',
+    jobCount: 8,
+    location: 'Stockholm, Sweden'
   },
   {
     id: 2,
-    title: 'Frontend Engineer',
-    company: 'StartupX',
-    location: 'San Francisco, CA',
-    salary: '$100k - $130k',
-    type: 'Full-time',
-    tech: ['Vue.js', 'TailwindCSS', 'GraphQL']
+    name: 'GreenTech Solutions',
+    description: 'Sustainable technology for a better tomorrow',
+    logo: 'GT',
+    jobCount: 5,
+    location: 'Copenhagen, Denmark'
   },
   {
     id: 3,
-    title: 'DevOps Engineer',
-    company: 'CloudTech',
-    location: 'Austin, TX',
-    salary: '$110k - $140k',
-    type: 'Full-time',
-    tech: ['AWS', 'Docker', 'Kubernetes']
+    name: 'FinanceFlow',
+    description: 'Next-gen financial services platform',
+    logo: 'FF',
+    jobCount: 12,
+    location: 'Oslo, Norway'
   },
   {
     id: 4,
-    title: 'Mobile Developer',
-    company: 'AppInnovate',
-    location: 'Remote',
-    salary: '$95k - $125k',
-    type: 'Full-time',
-    tech: ['React Native', 'iOS', 'Android']
+    name: 'DataMind',
+    description: 'Machine learning insights for business growth',
+    logo: 'DM',
+    jobCount: 6,
+    location: 'Helsinki, Finland'
   },
   {
     id: 5,
-    title: 'Data Scientist',
-    company: 'DataFlow',
-    location: 'New York, NY',
-    salary: '$130k - $160k',
-    type: 'Full-time',
-    tech: ['Python', 'TensorFlow', 'SQL']
+    name: 'CloudScale',
+    description: 'Scalable cloud infrastructure solutions',
+    logo: 'CS',
+    jobCount: 9,
+    location: 'Stockholm, Sweden'
   },
   {
     id: 6,
-    title: 'Backend Engineer',
-    company: 'MicroTech',
-    location: 'Seattle, WA',
-    salary: '$105k - $135k',
-    type: 'Full-time',
-    tech: ['Python', 'Django', 'PostgreSQL']
+    name: 'MedTech Innovations',
+    description: 'Digital healthcare transformation',
+    logo: 'MI',
+    jobCount: 4,
+    location: 'Copenhagen, Denmark'
+  }
+];
+
+// Job categories with counts
+const jobCategories = [
+  { name: 'Engineering', count: 127, color: 'bg-blue-50 text-blue-700' },
+  { name: 'Product & Design', count: 89, color: 'bg-purple-50 text-purple-700' },
+  { name: 'Marketing & Growth', count: 64, color: 'bg-green-50 text-green-700' },
+  { name: 'Sales & Business', count: 52, color: 'bg-orange-50 text-orange-700' },
+  { name: 'Operations', count: 38, color: 'bg-gray-50 text-gray-700' },
+  { name: 'Data & Analytics', count: 43, color: 'bg-indigo-50 text-indigo-700' }
+];
+
+// Recent jobs
+const recentJobs = [
+  {
+    id: 1,
+    title: 'Senior Frontend Developer',
+    company: 'TechFlow',
+    location: 'Stockholm, Sweden',
+    category: 'Engineering',
+    posted: '2 days ago',
+    remote: true
+  },
+  {
+    id: 2,
+    title: 'Product Designer',
+    company: 'GreenTech Solutions',
+    location: 'Copenhagen, Denmark',
+    category: 'Product & Design',
+    posted: '1 day ago',
+    remote: false
+  },
+  {
+    id: 3,
+    title: 'Growth Marketing Manager',
+    company: 'FinanceFlow',
+    location: 'Oslo, Norway',
+    category: 'Marketing & Growth',
+    posted: '3 days ago',
+    remote: true
+  },
+  {
+    id: 4,
+    title: 'Data Scientist',
+    company: 'DataMind',
+    location: 'Helsinki, Finland',
+    category: 'Data & Analytics',
+    posted: '5 days ago',
+    remote: true
   }
 ];
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="absolute top-0 left-0 right-0 z-20 bg-white/95 backdrop-blur-sm border-b border-gray-100">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">T</span>
+      <header className="border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-8">
+              <Link href="/" className="text-xl font-bold text-gray-900">
+                TechFill
+              </Link>
+              <nav className="hidden md:flex items-center space-x-6">
+                <Link href="/jobs" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                  Find jobs
+                </Link>
+                <Link href="/startups" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                  Browse startups
+                </Link>
+                <Link href="/pricing" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                  Pricing
+                </Link>
+                <Link href="/for-startups" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                  For startups
+                </Link>
+              </nav>
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              TechFill
-            </h1>
+            <div className="flex items-center space-x-3">
+              <Link href="/login" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                Log in
+              </Link>
+              <Link href="/signup/candidate" className="bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-700 transition-colors">
+                Sign up
+              </Link>
+            </div>
           </div>
-          <nav className="flex gap-4">
-            <Link 
-              href="/login" 
-              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Log in
-            </Link>
-            <Link 
-              href="/signup/candidate" 
-              className="px-6 py-2 text-sm font-medium bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
-              Get Started
-            </Link>
-          </nav>
         </div>
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1">
-        <section className="relative min-h-screen flex items-center justify-center">
-          {/* Background Image */}
-          <div className="absolute inset-0 z-0">
+      <main className="max-w-6xl mx-auto px-4">
+        <section className="relative py-24 overflow-hidden">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 -mx-4">
             <img 
-              src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
-              alt="Modern tech workspace"
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
+              alt="Team celebrating success"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-800/70 to-purple-900/80"></div>
+            {/* Black overlay for better text contrast */}
+            <div className="absolute inset-0 bg-black/60"></div>
+            
+            {/* Particle Animation Overlay */}
+            <div className="absolute inset-0">
+              <Particles
+                particleColors={["#ffffff", "#3b82f6"]}
+                particleCount={100}
+              />
+            </div>
           </div>
-          
+
           {/* Hero Content */}
-          <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-            <div className="max-w-4xl mx-auto">
-              <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8 border border-white/20">
-                <Zap className="h-4 w-4 text-yellow-400" />
-                <span className="text-white/90 text-sm font-medium">AI-Powered Matching Platform</span>
-              </div>
-              
-              <h2 className="text-6xl md:text-7xl font-bold mb-8 text-white leading-tight">
-                Find Your Next Role Through{' '}
-                <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-                  Mutual Interest
-                </span>
-              </h2>
-              
-              <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
-                TechFill connects tech professionals with startups through intent-based matching.
-                No more cold applications. Only meaningful connections.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Link 
-                  href="/signup/candidate" 
-                  className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold hover:from-blue-500 hover:to-blue-600 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center justify-center"
-                >
-                  I'm a Candidate
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link 
-                  href="/signup/company" 
-                  className="group px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/20 transition-all duration-300 border border-white/30 flex items-center justify-center"
-                >
-                  I'm Hiring
-                  <Users className="ml-2 h-5 w-5" />
-                </Link>
-              </div>
-              
-              {/* Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white mb-2">1000+</div>
-                  <div className="text-white/80">Active Candidates</div>
+          <div className="relative z-10 text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Find your next exciting startup job
+            </h1>
+            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+              Discover opportunities at innovative Nordic startups. Connect with companies that value your talent.
+            </p>
+          </div>
+
+          {/* Search Section */}
+          <div className="relative z-10 max-w-4xl mx-auto mb-16">
+            <div className="bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-xl">
+              <div className="grid md:grid-cols-4 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Job title or keyword</label>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Input
+                      placeholder="e.g. Frontend Developer"
+                      className="pl-10 border-gray-200"
+                    />
+                  </div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white mb-2">500+</div>
-                  <div className="text-white/80">Partner Companies</div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <select className="w-full pl-10 pr-10 py-2 border border-gray-200 rounded-md text-gray-700 bg-white appearance-none">
+                      <option>All Nordic</option>
+                      <option>Sweden</option>
+                      <option>Denmark</option>
+                      <option>Norway</option>
+                      <option>Finland</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  </div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white mb-2">95%</div>
-                  <div className="text-white/80">Match Success Rate</div>
+                <div className="flex items-end">
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium">
+                    Search jobs
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Featured Jobs Section - Moved Higher */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center space-x-2 bg-blue-50 rounded-full px-4 py-2 mb-6">
-                <Target className="h-4 w-4 text-blue-600" />
-                <span className="text-blue-600 text-sm font-medium">Hot Opportunities</span>
-              </div>
-              <h3 className="text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Browse Open Positions
-              </h3>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Check out the latest opportunities from innovative startups looking for talent like you.
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {featuredJobs.map((job) => (
-                <div key={job.id} className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-blue-200 hover:-translate-y-1">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex-1">
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                        {job.title}
-                      </h4>
-                      <p className="text-gray-600 font-medium mb-1">{job.company}</p>
+        {/* Job Categories - Move outside hero */}
+        <section className="py-16">
+          <div className="mb-16">
+            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Browse by category</h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {jobCategories.map((category) => (
+                <Link
+                  key={category.name}
+                  href={`/jobs?category=${category.name.toLowerCase()}`}
+                  className="group p-6 border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-sm transition-all"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        {category.name}
+                      </h3>
+                      <p className="text-gray-500 text-sm mt-1">
+                        {category.count} open positions
+                      </p>
+                    </div>
+                    <div className={`px-3 py-1 rounded-full text-xs font-medium ${category.color}`}>
+                      {category.count}
                     </div>
                   </div>
-                  
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-center text-gray-500 text-sm">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      {job.location}
-                    </div>
-                    <div className="flex items-center text-gray-500 text-sm">
-                      <DollarSign className="h-4 w-4 mr-2" />
-                      {job.salary}
-                    </div>
-                    <div className="flex items-center text-gray-500 text-sm">
-                      <Clock className="h-4 w-4 mr-2" />
-                      {job.type}
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {job.tech.map((tech, index) => (
-                      <span 
-                        key={index}
-                        className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                </Link>
               ))}
             </div>
-            
-            <div className="text-center">
-              <Link 
-                href="/jobs" 
-                className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          </div>
+        </section>
+
+        {/* Featured Startups */}
+        <section className="py-16 border-t border-gray-100">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Featured startups</h2>
+            <p className="text-gray-600">Innovative companies actively hiring in the Nordics</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {featuredStartups.map((startup) => (
+              <Link
+                key={startup.id}
+                href={`/startup/${startup.id}`}
+                className="group p-6 border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-sm transition-all"
               >
-                View All Jobs
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold text-sm">{startup.logo}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                      {startup.name}
+                    </h3>
+                    <p className="text-gray-600 text-sm mt-1 line-clamp-2">
+                      {startup.description}
+                    </p>
+                    <div className="flex items-center justify-between mt-3">
+                      <span className="text-gray-500 text-xs">{startup.location}</span>
+                      <span className="text-blue-600 text-sm font-medium">
+                        {startup.jobCount} jobs
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </Link>
-            </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link href="/startups" className="text-blue-600 hover:text-blue-700 font-medium">
+              View all startups →
+            </Link>
           </div>
         </section>
 
-        {/* How It Works */}
-        <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h3 className="text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                How It Works
-              </h3>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Our streamlined process connects the right people at the right time
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-12">
-              <div className="text-center group">
-                <div className="relative mb-8">
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-                    <span className="text-3xl font-bold text-white">1</span>
-                  </div>
-                  <div className="absolute top-10 left-1/2 w-full h-1 bg-gradient-to-r from-transparent via-blue-200 to-transparent md:rotate-90 md:w-20 md:h-1 md:translate-x-10 hidden md:block"></div>
-                </div>
-                <h4 className="text-2xl font-semibold mb-4 text-gray-900">Create Your Profile</h4>
-                <p className="text-gray-600 leading-relaxed">
-                  Candidates: Showcase your skills and preferences with our AI-powered profile builder.
-                  Companies: Post your open roles with detailed requirements.
-                </p>
-              </div>
-              
-              <div className="text-center group">
-                <div className="relative mb-8">
-                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-                    <span className="text-3xl font-bold text-white">2</span>
-                  </div>
-                  <div className="absolute top-10 left-1/2 w-full h-1 bg-gradient-to-r from-transparent via-purple-200 to-transparent md:rotate-90 md:w-20 md:h-1 md:translate-x-10 hidden md:block"></div>
-                </div>
-                <h4 className="text-2xl font-semibold mb-4 text-gray-900">Express Interest</h4>
-                <p className="text-gray-600 leading-relaxed">
-                  Browse opportunities and signal your interest with a single click.
-                  No lengthy applications or cover letters required.
-                </p>
-              </div>
-              
-              <div className="text-center group">
-                <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-                  <span className="text-3xl font-bold text-white">3</span>
-                </div>
-                <h4 className="text-2xl font-semibold mb-4 text-gray-900">Match & Connect</h4>
-                <p className="text-gray-600 leading-relaxed">
-                  When interest is mutual, connect directly through our platform.
-                  Every conversation starts with genuine intent.
-                </p>
-              </div>
-            </div>
+        {/* Recent Jobs */}
+        <section className="py-16 border-t border-gray-100">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">Latest jobs</h2>
+            <Link href="/jobs" className="text-blue-600 hover:text-blue-700 font-medium">
+              View all jobs →
+            </Link>
           </div>
-        </section>
-
-        {/* Social Proof Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h3 className="text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Trusted by Top Companies
-              </h3>
-              <p className="text-xl text-gray-600">
-                Join thousands of successful matches made on our platform
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
-                  <span className="font-bold text-gray-400">LOGO</span>
+          
+          <div className="space-y-4">
+            {recentJobs.map((job) => (
+              <Link
+                key={job.id}
+                href={`/job/${job.id}`}
+                className="group block p-6 border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-sm transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-4 mb-2">
+                      <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        {job.title}
+                      </h3>
+                      {job.remote && (
+                        <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">
+                          Remote
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center space-x-4 text-sm text-gray-500">
+                      <span className="font-medium">{job.company}</span>
+                      <span>•</span>
+                      <span>{job.location}</span>
+                      <span>•</span>
+                      <span>{job.category}</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-gray-500 text-sm">{job.posted}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
-                  <span className="font-bold text-gray-400">LOGO</span>
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
-                  <span className="font-bold text-gray-400">LOGO</span>
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
-                  <span className="font-bold text-gray-400">LOGO</span>
-                </div>
-              </div>
-            </div>
+              </Link>
+            ))}
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+      <footer className="border-t border-gray-100 mt-16">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">T</span>
-                </div>
-                <h3 className="text-xl font-bold">TechFill</h3>
-              </div>
-              <p className="text-gray-400">
-                Connecting tech talent with innovative companies through intent-based matching.
+              <h3 className="font-bold text-gray-900 mb-4">TechFill</h3>
+              <p className="text-gray-600 text-sm">
+                Connecting Nordic talent with innovative startups.
               </p>
             </div>
-            
             <div>
-              <h4 className="font-semibold mb-4">For Candidates</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/signup/candidate" className="hover:text-white transition-colors">Sign Up</Link></li>
-                <li><Link href="/jobs" className="hover:text-white transition-colors">Browse Jobs</Link></li>
-                <li><Link href="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
+              <h4 className="font-semibold text-gray-900 mb-4">For job seekers</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><Link href="/jobs" className="hover:text-gray-900">Browse jobs</Link></li>
+                <li><Link href="/signup/candidate" className="hover:text-gray-900">Create profile</Link></li>
+                <li><Link href="/guide" className="hover:text-gray-900">Job search guide</Link></li>
               </ul>
             </div>
-            
             <div>
-              <h4 className="font-semibold mb-4">For Companies</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/signup/company" className="hover:text-white transition-colors">Post Jobs</Link></li>
-                <li><Link href="/candidates" className="hover:text-white transition-colors">Find Talent</Link></li>
-                <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+              <h4 className="font-semibold text-gray-900 mb-4">For startups</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><Link href="/for-startups" className="hover:text-gray-900">Post jobs</Link></li>
+                <li><Link href="/pricing" className="hover:text-gray-900">Pricing</Link></li>
+                <li><Link href="/contact" className="hover:text-gray-900">Contact sales</Link></li>
               </ul>
             </div>
-            
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-                <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-                <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+              <h4 className="font-semibold text-gray-900 mb-4">Company</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><Link href="/about" className="hover:text-gray-900">About</Link></li>
+                <li><Link href="/blog" className="hover:text-gray-900">Blog</Link></li>
+                <li><Link href="/privacy" className="hover:text-gray-900">Privacy</Link></li>
               </ul>
             </div>
           </div>
-          
-          <div className="border-t border-gray-800 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="flex space-x-6 mb-4 md:mb-0">
-                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
-                <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">Terms of Service</Link>
-                <Link href="/cookies" className="text-gray-400 hover:text-white transition-colors">Cookie Notice</Link>
-              </div>
-              <p className="text-gray-400">&copy; 2026 TechFill. All rights reserved.</p>
-            </div>
+          <div className="border-t border-gray-100 pt-8 mt-8">
+            <p className="text-center text-gray-500 text-sm">
+              © 2026 TechFill. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>

@@ -43,27 +43,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchProfile = useCallback(async () => {
+  const fetchProfile = useCallback(async (abortSignal?: AbortSignal) => {
     try {
+      if (abortSignal?.aborted) return;
       const data = await authApi.me();
-      setProfile(data as unknown as UserProfile);
+      if (!abortSignal?.aborted) {
+        setProfile(data as unknown as UserProfile);
+      }
     } catch (error) {
-      // Profile fetch failed - this is OK for new Google users who haven't synced yet
-      // Don't log out the user, just set profile to null
-      console.warn('Failed to fetch profile:', error);
-      setProfile(null);
+      // Only log if not aborted
+      if (!abortSignal?.aborted) {
+        console.warn('Failed to fetch profile:', error);
+        setProfile(null);
+      }
     }
   }, []);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    
     // Get initial session
     supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      if (abortController.signal.aborted) return;
+      
       setSession(initialSession);
       setUser(initialSession?.user ?? null);
 
       if (initialSession?.user) {
-        fetchProfile().finally(() => setIsLoading(false));
+        fetchProfile(abortController.signal).finally(() => {
+          if (!abortController.signal.aborted) {
+            setIsLoading(false);
+          }
+        });
       } else {
+        setIsLoading(false);
+      }
+    }).catch(() => {
+      // Ignore errors if aborted
+      if (!abortController.signal.aborted) {
         setIsLoading(false);
       }
     });
@@ -72,19 +89,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      if (abortController.signal.aborted) return;
+      
       setSession(newSession);
       setUser(newSession?.user ?? null);
 
       if (newSession?.user) {
-        await fetchProfile();
+        await fetchProfile(abortController.signal);
       } else {
         setProfile(null);
       }
 
-      setIsLoading(false);
+      if (!abortController.signal.aborted) {
+        setIsLoading(false);
+      }
     });
 
     return () => {
+      abortController.abort();
       subscription.unsubscribe();
     };
   }, [fetchProfile]);
