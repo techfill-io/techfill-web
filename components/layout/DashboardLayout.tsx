@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/Button';
-import { User, Settings, LogOut, FileText, Building2 } from 'lucide-react';
+import { User, Settings, LogOut, FileText, Building2, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -44,6 +44,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         href: '/dashboard/jobs',
         icon: Building2,
         active: pathname.startsWith('/dashboard/jobs'),
+      },
+      {
+        name: 'Candidates',
+        href: '/dashboard/candidates',
+        icon: Users,
+        active: pathname.startsWith('/dashboard/candidates'),
       }
     ] : []),
   ];

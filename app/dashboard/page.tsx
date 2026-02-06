@@ -239,9 +239,11 @@ export default function DashboardPage() {
                 <span className="text-sm text-gray-600">Shortlisted</span>
                 <span className="text-sm font-medium">0</span>
               </div>
-              <Button variant="outline" size="sm" className="w-full mt-3">
-                Browse Candidates
-              </Button>
+              <Link href="/dashboard/candidates">
+                <Button variant="outline" size="sm" className="w-full mt-3">
+                  Browse Candidates
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -264,10 +266,12 @@ export default function DashboardPage() {
               <FileText className="h-4 w-4 mr-2" />
               Create Job Posting
             </Button>
-            <Button variant="outline" className="w-full flex items-center justify-start">
-              <User className="h-4 w-4 mr-2" />
-              Search Candidates
-            </Button>
+            <Link href="/dashboard/candidates" className="block">
+              <Button variant="outline" className="w-full flex items-center justify-start">
+                <User className="h-4 w-4 mr-2" />
+                Search Candidates
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>
