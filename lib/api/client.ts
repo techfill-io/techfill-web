@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { supabase } from '@/lib/supabase/client';
+import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
@@ -19,7 +19,7 @@ apiClient.interceptors.request.use(
 
     const {
       data: { session },
-    } = await supabase.auth.getSession();
+    } = await getSupabaseBrowserClient().auth.getSession();
 
     if (session?.access_token) {
       config.headers.Authorization = `Bearer ${session.access_token}`;

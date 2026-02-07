@@ -3,12 +3,13 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase/client';
+import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
 import { loginSchema, type LoginFormData } from '@/lib/validations/auth';
 import { ZodError } from 'zod';
 
 function LoginForm() {
+  const supabase = getSupabaseBrowserClient();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState<LoginFormData>({

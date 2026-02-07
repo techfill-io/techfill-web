@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase/client';
+import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 
 interface GoogleSignInButtonProps {
   mode?: 'signin' | 'signup';
@@ -10,6 +10,7 @@ interface GoogleSignInButtonProps {
 }
 
 export function GoogleSignInButton({ mode = 'signin', role, className = '' }: GoogleSignInButtonProps) {
+  const supabase = getSupabaseBrowserClient();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

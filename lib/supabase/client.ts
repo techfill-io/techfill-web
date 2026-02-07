@@ -1,12 +1,20 @@
 import { createBrowserClient } from '@supabase/ssr';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
+let _supabase: ReturnType<typeof createBrowserClient> | null = null;
 
-if (!supabaseUrl || !supabasePublishableKey) {
-  throw new Error('Missing Supabase environment variables. Please check your .env.local file.');
+// Lazily create the browser client to avoid crashing during
+// Next.js static page generation when env vars are not available.
+export function getSupabaseBrowserClient() {
+  if (!_supabase) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Missing Supabase environment variables. Please check your .env.local file.');
+    }
+
+    _supabase = createBrowserClient(supabaseUrl, supabaseKey);
+  }
+
+  return _supabase;
 }
-
-// Create Supabase browser client with cookie-based session storage
-// This ensures the session is accessible by both client and server (middleware)
-export const supabase = createBrowserClient(supabaseUrl, supabasePublishableKey);

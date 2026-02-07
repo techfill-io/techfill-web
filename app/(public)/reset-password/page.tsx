@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase/client';
+import { getSupabaseBrowserClient } from '@/lib/supabase/client';
 import { resetPasswordSchema } from '@/lib/validations/auth';
 import { ZodError } from 'zod';
 
 export default function ResetPasswordPage() {
+  const supabase = getSupabaseBrowserClient();
   const router = useRouter();
   const [formData, setFormData] = useState({
     password: '',
@@ -30,7 +31,7 @@ export default function ResetPasswordPage() {
       supabase.auth.setSession({
         access_token: accessToken,
         refresh_token: hashParams.get('refresh_token') || '',
-      }).then(({ error }) => {
+      }).then(({ error }: { error: Error | null }) => {
         if (error) {
           setIsValidToken(false);
           setGeneralError('Invalid or expired reset link. Please request a new one.');
@@ -40,7 +41,7 @@ export default function ResetPasswordPage() {
       });
     } else {
       // Check if we already have a valid recovery session
-      supabase.auth.getSession().then(({ data: { session } }) => {
+      supabase.auth.getSession().then(({ data: { session } }: { data: { session: unknown } }) => {
         if (session) {
           setIsValidToken(true);
         } else {
