@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { Search, MapPin, Building2, Users, ChevronDown } from 'lucide-react';
+import { Search, MapPin, Building2, Users, ChevronDown, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import Particles from '@/components/ui/Particles';
+import PublicHeader from '@/components/layout/PublicHeader';
 import Image from 'next/image';
 
 // Mock startup data
@@ -110,75 +111,35 @@ const recentJobs = [
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="text-xl font-bold text-gray-900">
-                TechFill
-              </Link>
-              <nav className="hidden md:flex items-center space-x-6">
-                <Link href="/jobs" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
-                  Find jobs
-                </Link>
-                <Link href="/startups" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
-                  Browse startups
-                </Link>
-                <Link href="/pricing" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
-                  Pricing
-                </Link>
-                <Link href="/for-startups" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
-                  For startups
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Link href="/login" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
-                Log in
-              </Link>
-              <Link href="/signup/candidate" className="bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-700 transition-colors">
-                Sign up
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
-
+      <PublicHeader />
+        {/* Particle Animation Overlay */}
+      <div className="absolute z-10 w-full h-[80vh]">
+        <Particles
+          particleColors={["#ffffff", "#3b82f6", "#93c5fd"]}
+          particleCount={200}
+          particleSpread={12}
+          speed={0.1}
+          particleBaseSize={150}
+          moveParticlesOnHover
+          alphaParticles={true}
+          disableRotation={false}
+        />
+      </div>
       {/* Hero Section */}
       <main className="max-w-6xl mx-auto px-4">
         <section className="relative py-24 overflow-hidden">
-          {/* Background Image with Overlay */}
-          <div className="absolute inset-0 -mx-4">
-            <Image 
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
-              alt="Team celebrating success"
-              className="w-full h-full object-cover"
-            />
-            {/* Black overlay for better text contrast */}
-            <div className="absolute inset-0 bg-black/60"></div>
-            
-            {/* Particle Animation Overlay */}
-            <div className="absolute inset-0">
-              <Particles
-                particleColors={["#ffffff", "#3b82f6"]}
-                particleCount={100}
-              />
-            </div>
-          </div>
-
           {/* Hero Content */}
-          <div className="relative z-10 text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <div className="relative text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold text-black mb-4">
               Find your next exciting startup job
             </h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            <p className="text-xl text-black/90 max-w-2xl mx-auto">
               Discover opportunities at innovative Nordic startups. Connect with companies that value your talent.
             </p>
           </div>
 
           {/* Search Section */}
-          <div className="relative z-10 max-w-4xl mx-auto mb-16">
+          <div className="relative z-20 max-w-4xl mx-auto mb-16">
             <div className="bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-xl">
               <div className="grid md:grid-cols-4 gap-4">
                 <div className="md:col-span-2">
@@ -216,7 +177,7 @@ export default function LandingPage() {
         </section>
 
         {/* Job Categories - Move outside hero */}
-        <section className="py-16">
+        <section className="relative py-16 z-20">
           <div className="mb-16">
             <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Browse by category</h2>
             <div className="grid md:grid-cols-3 gap-4">
@@ -284,7 +245,7 @@ export default function LandingPage() {
 
           <div className="text-center">
             <Link href="/startups" className="text-blue-600 hover:text-blue-700 font-medium">
-              View all startups →
+              View all startups <ChevronRight className="inline h-4 w-4" />
             </Link>
           </div>
         </section>
@@ -294,7 +255,7 @@ export default function LandingPage() {
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900">Latest jobs</h2>
             <Link href="/jobs" className="text-blue-600 hover:text-blue-700 font-medium">
-              View all jobs →
+              View all jobs <ChevronRight className="inline h-4 w-4" />
             </Link>
           </div>
           
@@ -340,7 +301,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-bold text-gray-900 mb-4">TechFill</h3>
+              <Link href="/" className="font-bold text-gray-900 mb-4 block">TechFill</Link>
               <p className="text-gray-600 text-sm">
                 Connecting Nordic talent with innovative startups.
               </p>

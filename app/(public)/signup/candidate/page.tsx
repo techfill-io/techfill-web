@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
 import { authApi } from '@/lib/api/auth';
@@ -267,7 +268,7 @@ export default function CandidateSignupPage() {
 
         <div className="text-center">
           <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
-            &larr; Back to home
+            <ChevronLeft className="inline h-4 w-4" /> Back to home
           </Link>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getSupabaseBrowserClient } from '@/lib/supabase/client';
@@ -234,7 +235,7 @@ export default function ResetPasswordPage() {
 
         <div className="text-center">
           <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900">
-            &larr; Back to login
+            <ChevronLeft className="inline h-4 w-4" /> Back to login
           </Link>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
+import { ChevronLeft } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
@@ -266,7 +267,7 @@ function CompanySignupForm() {
 
         <div className="text-center">
           <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
-            &larr; Back to home
+            <ChevronLeft className="inline h-4 w-4" /> Back to home
           </Link>
         </div>
       </div>

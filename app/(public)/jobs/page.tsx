@@ -1,27 +1,12 @@
 import Link from 'next/link';
+import PublicHeader from '@/components/layout/PublicHeader';
 
 export default function JobsPage() {
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">TechFill</h1>
-          <nav className="flex gap-4">
-            <Link href="/" className="px-4 py-2 text-sm font-medium hover:underline">
-              Home
-            </Link>
-            <Link href="/login" className="px-4 py-2 text-sm font-medium hover:underline">
-              Log in
-            </Link>
-            <Link href="/signup/candidate" className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700">
-              Sign up
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">
+      <PublicHeader />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">Open Positions</h1>
           <p className="text-gray-600">

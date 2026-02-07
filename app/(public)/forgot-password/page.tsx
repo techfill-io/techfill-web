@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { authApi } from '@/lib/api/auth';
 import { forgotPasswordSchema } from '@/lib/validations/auth';
@@ -103,7 +104,7 @@ export default function ForgotPasswordPage() {
 
         <div className="text-center">
           <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900">
-            &larr; Back to login
+            <ChevronLeft className="inline h-4 w-4" /> Back to login
           </Link>
         </div>
       </div>
