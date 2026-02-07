@@ -276,7 +276,7 @@ export default function CandidatesPage() {
                       </div>
 
                       {/* Looking For */}
-                      <p className="text-sm text-gray-600 italic">"{candidate.looking_for}"</p>
+                      <p className="text-sm text-gray-600 italic">&quot;{candidate.looking_for}&quot;</p>
                     </div>
                   </div>
 
