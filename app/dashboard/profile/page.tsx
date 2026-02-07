@@ -225,7 +225,7 @@ export default function ProfilePage() {
 
   // Mock company profile data - will be replaced with API call
   const companyProfile = {
-    name: profile?.profile?.company_name || 'Your Company',
+    name: (profile?.profile?.company_name as string) || 'Your Company',
     email: user?.email || '',
     website: '',
     description: '',
@@ -371,7 +371,7 @@ export default function ProfilePage() {
                 }
               </p>
               <Button 
-                variant={companyProfile.is_visible ? "outline" : "default"} 
+                variant={companyProfile.is_visible ? "outline" : "primary"} 
                 size="sm" 
                 className="w-full"
                 disabled={!companyProfile.is_visible}
